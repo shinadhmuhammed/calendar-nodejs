@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { authService } from '../Services/auth.services';
 import { User } from '../Models/userModel';
+import { AuthenticatedRequest } from '../Middlewares/authMiddleware';
 
 class AuthController {
   // Register User
@@ -33,6 +34,19 @@ class AuthController {
     } catch (err:any) {
       res.status(500).json({ message: err.message });
     }
+  }
+
+  //Getting employees of the specific manager
+  public async getEmployeesByManager(req:AuthenticatedRequest,res:Response){
+      try {
+        const managerId=req.userId
+        if (!managerId) {
+          return res.status(400).json({ message: 'Manager ID not found' });
+        }
+        const employees=await authService.getEmployees(managerId)
+        res.status(200).json(employees)
+      } catch (error) {
+      }
   }
 }
 

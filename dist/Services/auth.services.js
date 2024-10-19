@@ -18,34 +18,74 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userModel_1 = require("../Models/userModel");
 class AuthService {
     constructor() { }
-    register(name, email, password) {
+    // Register new user
+    register(name, email, password, role, managerId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userExists = yield userModel_1.User.findOne({ email });
-            if (userExists)
-                throw new Error('User already exists');
-            const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
-            const user = new userModel_1.User({ name, email, password: hashedPassword });
-            yield user.save();
-            return user;
+            try {
+                const userExists = yield userModel_1.User.findOne({ email });
+                if (userExists)
+                    throw new Error('User already exists');
+                const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
+                const user = new userModel_1.User({
+                    username: name,
+                    email,
+                    password: hashedPassword,
+                    role,
+                    managerId: managerId ? managerId : undefined,
+                });
+                yield user.save();
+                return user;
+            }
+            catch (error) {
+                console.error('Error during registration:', error.message);
+                throw new Error(error.message || 'Error registering user');
+            }
         });
     }
+    // Login user
     login(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield userModel_1.User.findOne({ email });
-            if (!user)
-                throw new Error('Invalid credentials');
-            const isMatch = yield bcryptjs_1.default.compare(password, user.password);
-            if (!isMatch)
-                throw new Error('Invalid credentials');
-            const token = jsonwebtoken_1.default.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
-                expiresIn: '1h',
-            });
-            return { user, token };
+            try {
+                const user = yield userModel_1.User.findOne({ email });
+                if (!user)
+                    throw new Error('Invalid credentials');
+                const isMatch = yield bcryptjs_1.default.compare(password, user.password);
+                if (!isMatch)
+                    throw new Error('Invalid credentials');
+                const token = jsonwebtoken_1.default.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
+                    expiresIn: '1h',
+                });
+                return { user, token };
+            }
+            catch (error) {
+                console.error('Error during login:', error.message);
+                throw new Error(error.message || 'Login failed');
+            }
         });
     }
-    getUserById(id) {
+    // Get user by ID
+    // public async getUserById(id: string): Promise<IUser | null> {
+    //   try {
+    //     const user = await User.findById(id);
+    //     if (!user) throw new Error('User not found');
+    //     return user;
+    //   } catch (error: any) {
+    //     console.error('Error fetching user by ID:', error.message);
+    //     throw new Error(error.message || 'Error fetching user');
+    //   }
+    // }
+    // Get employees assigned to a manager
+    getEmployees(managerId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return userModel_1.User.findById(id);
+            try {
+                const employees = yield userModel_1.User.find({ role: 'Employee', managerId });
+                console.log(employees, 'employees');
+                return employees;
+            }
+            catch (error) {
+                console.error('Error fetching employees:', error.message);
+                throw new Error(error.message || 'Error fetching employees');
+            }
         });
     }
 }
