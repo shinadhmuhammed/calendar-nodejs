@@ -19,6 +19,7 @@ class AuthRoutes {
     this.router.post("/tasks",authenticateToken,taskController.createTask);
     this.router.get("/getTasks",authenticateToken,taskController.getTaskById);
     this.router.get('/tasks/my-tasks', authenticateToken, taskController.getTasksForCurrentUser);
+    this.router.get('/tasks/manager-tasks', authenticateToken, taskController.getTasksByManager);
     this.router.get('/user/role', authenticateToken, taskController.getCurrentUserRole);
     this.router.put('/tasks/:id', authenticateToken, taskController.editTask);
     this.router.delete('/tasks/:id', authenticateToken, taskController.deleteTask);

@@ -13,7 +13,7 @@ class taskModel {
   constructor() {
     this.taskSchema = new Schema({
       title: { type: String, required: true },
-      description: { type: String,required:true },
+      description: { type: String, required: true },
       date: { type: Date, required: true },
       assignedTo: {
         type: mongoose.Schema.Types.ObjectId,
