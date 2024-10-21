@@ -23,7 +23,6 @@ class AuthRoutes {
     this.router.get('/user/role', authenticateToken, taskController.getCurrentUserRole);
     this.router.put('/tasks/:id', authenticateToken, taskController.editTask);
     this.router.delete('/tasks/:id', authenticateToken, taskController.deleteTask);
-    
   }
 }
 

@@ -57,6 +57,7 @@ class TaskService {
   public async getTasksCreatedByManager(managerId: string) {
     try {
       const tasks = await Task.find({ createdBy: managerId }).populate('assignedTo', 'username');
+      console.log(tasks)
       return tasks;
     } catch (error: any) {
       console.error("Error fetching tasks created by manager:", error.message);

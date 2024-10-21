@@ -4,7 +4,6 @@ import { User } from "../Models/userModel";
 import { AuthenticatedRequest } from "../Middlewares/authMiddleware";
 
 class AuthController {
-  // Register User
   public async register(req: Request, res: Response) {
     try {
       const { name, email, password, role, managerId } = req.body;
@@ -22,7 +21,6 @@ class AuthController {
     }
   }
 
-  // Login User
   public async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
@@ -42,7 +40,7 @@ class AuthController {
     }
   }
 
-  //Getting employees of the specific manager
+
   public async getEmployeesByManager(req: AuthenticatedRequest, res: Response) {
     try {
       const managerId = req.userId;
@@ -51,7 +49,9 @@ class AuthController {
       }
       const employees = await authService.getEmployees(managerId);
       res.status(200).json(employees);
-    } catch (error) {}
+    } catch (error:any) {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 
