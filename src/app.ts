@@ -21,7 +21,7 @@ class App {
     this.app.use(express.json({ limit: "50mb" }));
     this.app.use(
       cors({
-        origin: "https://calendar-react-4iut.onrender.com/",
+        origin: "*",
       })
     );
   }
