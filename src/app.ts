@@ -19,18 +19,18 @@ class App {
 
   private applyMiddleware(): void {
     this.app.use(express.json({ limit: "50mb" }));
+    
+  
     this.app.use(
       cors({
-        origin: "*",
+        origin: "https://calendar-react-4iut.onrender.com", 
+        credentials: true,  
       })
     );
   }
 
   private routes(): void {
     this.app.use("/", authRoutes);
-    // this.app.use((req, res, next) => {
-    //   res.status(500).send("Something broke!");
-    // });
   }
 
   public startServer(PORT: number): void {
