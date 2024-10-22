@@ -23,8 +23,7 @@ class App {
   
     this.app.use(
       cors({
-        origin: "https://calendar-react-4iut.onrender.com", 
-        credentials: true,  
+        origin: "*",  
       })
     );
   }
