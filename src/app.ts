@@ -28,9 +28,9 @@ class App {
 
   private routes(): void {
     this.app.use("/", authRoutes);
-    this.app.use((req, res, next) => {
-      res.status(500).send("Something broke!");
-    });
+    // this.app.use((req, res, next) => {
+    //   res.status(500).send("Something broke!");
+    // });
   }
 
   public startServer(PORT: number): void {
